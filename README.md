@@ -38,7 +38,8 @@ for more information on downloading datasets see `detectron/data/sample_data/REA
 ### Running Detectron
 
 There is work in progress to package Detectron in a robust and easy to deploy system.
-For now, we all the code for our experiments in located in the `experiments` directory.
+For now, all the code needed to reproduce our experiments is in located in the `experiments` directory
+and can be run like the following example.
 
 ```shell
 # run the cifar experiment using the standard config
