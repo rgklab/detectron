@@ -30,7 +30,6 @@ We provide a simple config system to store dataset path mappings in the file `de
 datasets:
   default: /datasets
   cifar10_1: /datasets/cifar-10-1
-  uci_heart: /datasets/UCI
   camelyon17: /datasets/camelyon17
 ```
 
