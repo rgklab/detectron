@@ -7,25 +7,19 @@ ___
 
 ### Environment
 
-We recommend using conda environment to run `deeptst`. This can be done with the following commands:
+`detectron` requires a working build of `pytorch` with the cudatoolkit enabled.
+A simple environment setup using `conda` is provided below.
 
 ```shell
 # create and activate conda environment using a python version >= 3.9
 conda create -n detectron python=3.9
 conda activate detectron
 
-# install the latest version of pytorch (tested for >= 1.9.0)
+# install the latest stable release of pytorch (tested for >= 1.9.0)
 conda install pytorch torchvision cudatoolkit=11.3 -c pytorch
 
 # install additional dependencies with pip
 pip install -r requirements.txt
-```
-
-To run code in this repository make sure the root directory is in your python path. This can be done with the following
-command:
-
-```shell
-export PYTHONPATH=$PYTHONPATH:/path/to/deeptst
 ```
 
 ### Datasets
@@ -38,12 +32,9 @@ datasets:
   cifar10_1: /datasets/cifar-10-1
   uci_heart: /datasets/UCI
   camelyon17: /datasets/camelyon17
-model:
-  cifar: /models/cifar.pt
-  camelyon: /models/camelyon.pt
 ```
 
-for more information see `detectron/data/sample_data/README.md`.
+for more information on downloading datasets see `detectron/data/sample_data/README.md`.
 
 ### Running Detectron
 
@@ -52,8 +43,8 @@ For now, we all the code for our experiments in located in the `experiments` dir
 
 ```shell
 # run the cifar experiment using the standard config
-# use python scratch/detectron/detectron_cifar.py --help for a documented list of options
-❯ python experiments/detectron_cifar.py --run_name detectron_cifar
+# use python experiments.detectron_cifar.py --help for a documented list of options
+❯ python -m experiments.detectron_cifar --run_name cifar
 ```
 
 ### Evaluating Detectron
@@ -64,7 +55,7 @@ The script in `experiments/analysis.py` will read these files and produce a summ
 described in the paper.
 
 ```shell
-❯ python scratch/detectron/analysis.py --run_name detectron_cifar
+❯ python -m experiments.analysis --run_name cifar
 # Output
 → 600 runs loaded
 → Running Disagreement Test
