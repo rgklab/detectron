@@ -3,6 +3,8 @@ ___
 **Official implementation of the ICLR 2023 paper [A Learning Based Hypothesis Test for Harmful Covariate Shift
 ](https://arxiv.org/abs/2212.02742)**
 
+![](figure.png)
+
 ## Setup
 
 ### Environment
