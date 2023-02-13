@@ -43,7 +43,7 @@ and can be run like the following example.
 
 ```shell
 # run the cifar experiment using the standard config
-# use python experiments.detectron_cifar.py --help for a documented list of options
+# use python experiments.detectron_cifar --help for a documented list of options
 ❯ python -m experiments.detectron_cifar --run_name cifar
 ```
 
