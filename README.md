@@ -1,10 +1,10 @@
-![](logo.svg)
+![](media/logo.svg)
 ___
 **Official implementation of the ICLR 2023 paper [A Learning Based Hypothesis Test for Harmful Covariate Shift
 ](https://arxiv.org/abs/2212.02742)**
 
-![](dark_figure.png#gh-dark-mode-only)
-![](figure.png#gh-light-mode-only)
+![](media/dark_figure.png#gh-dark-mode-only)
+![](media/figure.png#gh-light-mode-only)
 
 ## Intro
 We introduce the **Detectron**, a learning based hypothesis test for harmful covariate shift. Given a pretrained model $f: X\to Y$ and an unlabeled dataset $Q=\\{x\\}_{i=1}^n$ Detectron aims to automatically decide if $Q$ is similar enough to the $f(x)$'s training domain such that we can trust it to make reliable predictions.  
@@ -13,11 +13,11 @@ The algorithm works in two major steps:
 
 First, we estimate the distribution of the test statistic $\phi$ which is computed as the *empirical disagreement rate* of a classifier $g(x)$ trained to explicitly disagree with a pretrained model $f(x)$ on i.i.d samples from the training set.  In practice, we create $g(x)$ by finetuning $f(x)$ using the _diagreement cross entropy_ defined formally in the paper. It is also important to limit the hypothesis space for $g(x)$ by forcing it to agree with $f(x)$ on the original training set while giving it a limited compute budget to prevent overfitting. Conceptually we can interpret $\phi$ as the degree of underspecification $f(x)$ admits on its training domain.
 
-![](gif1.gif)
+![](media/gif1.gif)
 
 Next, we train another classifier $g^\star(x)$ in the exact same way as $g(x)$ but we use the unlabeled data $Q$. We detect covariate shift at a significance level $\alpha$ by comparing the empirical disagreement rate of $g^\star(x)$ on $Q$ (denoted $\phi^\star$) to the estimated distribution of $\phi$.
 
-![](gif2.gif)
+![](media/gif2.gif)
 
 In our paper, we further show how to boost the power of the test using emsembling and by replacing the disagreement statistic $\phi$ with the related predictive entropy.  
 
