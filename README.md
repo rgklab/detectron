@@ -101,3 +101,18 @@ N = 10, 20, 50
 TPR: .35 ± .05 AUC: 0.712 | TPR: .56 ± .05 AUC: 0.866 | TPR: .92 ± .03 AUC: 0.981
 
 ```
+
+## Citation
+
+Please use the following citation if you use this code or methods in your own work.
+
+```bibtex
+@inproceedings{
+    ginsberg2023a,
+    title = {A Learning Based Hypothesis Test for Harmful Covariate Shift},
+    author = {Tom Ginsberg and Zhongyuan Liang and Rahul G Krishnan},
+    booktitle = {The Eleventh International Conference on Learning Representations },
+    year = {2023},
+    url = {https://openreview.net/forum?id=rdfgqiwz7lZ}
+}
+```
