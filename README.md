@@ -3,7 +3,8 @@ ___
 **Official implementation of the ICLR 2023 paper [A Learning Based Hypothesis Test for Harmful Covariate Shift
 ](https://arxiv.org/abs/2212.02742)**
 
-![](figure.png)
+![](figure.png#gh-dark-mode-only)
+![](dark_figure.png#gh-light-mode-only)
 
 ## Intro
 We introduce the **Detectron**, a learning based hypothesis test for harmful covariate shift. Given a pretrained model $f: X\to Y$ and an unlabeled dataset $Q=\{x\}_i^n$ Detectron aims to automatically decide if $Q$ is similar enough to the $f(x)$'s training domain such that we can trust it to make reliable predictions.  
