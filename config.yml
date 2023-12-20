@@ -1,5 +1,7 @@
 # example config file please see data/sample_data/README.md
 datasets:
-  default: /voyager/datasets
-  cifar10_1: /voyager/datasets/cifar-10-1
-  camelyon_quantized: /voyager/datasets/camelyon17
+  default: /home/ludmila/datasets/
+  cifar10: /home/ludmila/datasets/
+  cifar10_1: /home/ludmila/datasets/
+  camelyon17: path/for/install
+  camelyon_quantized: /home/ludmila/datasets/

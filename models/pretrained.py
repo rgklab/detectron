@@ -9,7 +9,7 @@ from torchvision import models
 from models.classifier import TorchvisionClassifier, MLP
 
 WILDS_PATH = '/voyager/projects/tomginsberg/wilds_models'
-CKPT_PATH = '/voyager/projects/tomginsberg/detectron_old/checkpoints'
+CKPT_PATH = 'checkpoints'
 
 
 def to_device(device):
@@ -66,6 +66,7 @@ def resnet18_trained_on_cifar10(ckp='cifar/cifar10_resnet18/epoch=197-step=77417
 def resnet18_collection_trained_on_cifar10(return_names=False, device='cuda:1', eval_=True):
     checkpoints = glob(os.path.join(CKPT_PATH, 'cifar/baselines/*/*.ckpt'))
     to_device_fn = to_device(device)
+    #print("spooder was here hehehehe")
     models = [to_device_fn(resnet18_trained_on_cifar10(c, prefix=None)) for c in
               tqdm(sorted(checkpoints, key=lambda x: int(x.split('/')[-2][-1])))]
     if eval_:
@@ -107,9 +108,9 @@ def xgb_trained_on_uci_heart(seed=0):
         'colsample_bytree': 0.8,
         'min_child_weight': 1,
         'nthread': 4,
-        'tree_method': 'gpu_hist'
+        'tree_method': 'approx' # If I have gpu : gpu_hist
     })
-    bst.load_model(f'/voyager/datasets/UCI/xgb_{seed=}.model')
+    bst.load_model(f'models/UCI/uci_heart_{seed}.model') # In order to test this I need to retrain the model again (use uci.py)
     return bst
 
 

@@ -124,7 +124,9 @@ for N in map(int, args.samples):
 
             # evaluate the base model on q
             base = DetectronModule(base_model)
-            pl.Trainer(gpus=gpus, logger=False, max_epochs=1).test(base, pq_loader.test_dataloader(), verbose=False)
+
+            # Use upgraded version of the pl library
+            pl.Trainer(logger=False, max_epochs=1).test(base, pq_loader.test_dataloader(), verbose=False)
             test_results.append(base.test_struct.to_dict() | {'count': count} | log)
 
             # init the val results table
@@ -142,7 +144,7 @@ for N in map(int, args.samples):
                 try:
                     # set up the training module
                     trainer = pl.Trainer(
-                        gpus=gpus,
+                        accelerator="auto",
                         max_epochs=max_epochs_per_model,
                         logger=False,
                         num_sanity_val_steps=0,

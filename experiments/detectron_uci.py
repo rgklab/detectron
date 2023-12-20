@@ -20,7 +20,7 @@ DEFAULT_PARAMS = {
     'colsample_bytree': 0.8,
     'min_child_weight': 1,
     'nthread': 4,
-    'tree_method': 'gpu_hist'
+    'tree_method': 'hist'  # If I have a gpu : gpu_hist
 }
 
 BASE_MODEL = xgb_trained_on_uci_heart(seed=0)
@@ -64,7 +64,8 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
         'val_auc': float(base_model.eval(val_dmatrix).split(':')[1]),
         'test_auc': float(base_model.eval(q_labeled).split(':')[1]),
         'rejection_rate': 0,
-        'test_probabilities': q_pseudo_probabilities,
+        # The parameter below is needed to calculate the AUC and TPR of the detectron entropy test!
+        'logits': base_model.predict(q_labeled,output_margin = True), 
         'count': N
     })
     stopper = EarlyStopper(patience=patience, mode='min')
@@ -80,17 +81,17 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
         q_unlabeled = xgb.DMatrix(q_data)
         mask = ((detector.predict(q_unlabeled) > 0.5) == q_pseudo_labels)
 
+        
         # filter data to exclude the not rejected samples
         q_data = q_data[mask]
         q_pseudo_labels = q_pseudo_labels[mask]
-        n = len(q_data)
-
+        n = len(q_data)              
         # log the results for this model
         record.append({'ensemble_idx': i,
                        'val_auc': float(detector.eval(val_dmatrix).split(':')[1]),
                        'test_auc': float(detector.eval(q_labeled).split(':')[1]),
                        'rejection_rate': 1 - n / N,
-                       'test_probabilities': detector.predict(q_labeled),
+                       'logits':  detector.predict(q_labeled,output_margin = True),               
                        'count': n})
 
         # break if no more data

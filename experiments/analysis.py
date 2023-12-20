@@ -22,11 +22,11 @@ test_q = [torch.load(x) for x in (glob(f'{run_name}/test_*_q_*.pt'))]
 for test in [test_p, test_q]:
     for d in test:
         for dd in d:
-            dd['logits'] = dd['logits'].numpy()
-            del dd['rejection_mask']
-
+            if 'logits' in dd:
+                dd['logits'] = dd['logits'].numpy()
+            if 'rejection_mask' in dd:
+                del dd['rejection_mask']
 print(f'→ {len(test_p) + len(test_q)} runs loaded')
-
 tp = pd.concat([pd.DataFrame(x) for x in test_p])
 tq = pd.concat([pd.DataFrame(x) for x in test_q])
 
@@ -70,14 +70,20 @@ for N in Ns:
     p_entropy = []
     for seed in tp.query(f'N=={N}').seed.unique():
         probs = tp.query(f'seed=={seed} and N=={N}').iloc[:n + 1].logits.map(lambda x: softmax(x, axis=-1)).mean()
-        entropy = (-np.log(probs) * probs).sum(1)
+        # print("HELLO PROBS1 ")
+        # print(probs)
+        entropy = (-np.log(probs) * probs).sum(-1) # Changed here
+        # print("ENTROPY HERE")
         p_entropy.append(entropy)
     p_entropy = np.stack(p_entropy)
 
     q_entropy = []
     for seed in tq.query(f'N=={N}').seed.unique():
         probs = tq.query(f'seed=={seed} and N=={N}').iloc[:n + 1].logits.map(lambda x: softmax(x, axis=-1)).mean()
-        entropy = (-np.log(probs) * probs).sum(1)
+        # print("HELLO PROBS2 ")
+        # print(probs)
+
+        entropy = (-np.log(probs) * probs).sum(-1)
         q_entropy.append(entropy)
 
     q_entropy = np.stack(q_entropy)
@@ -85,6 +91,10 @@ for N in Ns:
     null_tests = []
     for i, s1 in enumerate(p_entropy):
         s2 = p_entropy[np.arange(len(p_entropy)) != i].flatten()
+        
+        # Needed to reshape this so that we can append it to the list s1 was returned as a value and s2 as a numpy
+        s1 = s1.reshape(-1)
+       
         null_tests.append(ks_2samp(s1, s2).pvalue)
 
     null = np.array(null_tests)
@@ -92,6 +102,8 @@ for N in Ns:
     alt_tests = []
     s2 = p_entropy[1:].flatten()
     for s1 in q_entropy:
+        s1 = s1.reshape(-1)
+        # print(s1.shape,s2.shape)
         alt_tests.append(ks_2samp(s1, s2).pvalue)
 
     alt = np.array(alt_tests)

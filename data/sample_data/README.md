@@ -5,7 +5,7 @@
 ```python
 import torchvision
 
-torchvision.datasets.CIFAR10(root='path/for/install', download=True)
+torchvision.datasets.CIFAR10(root='/home/ludmila/datasets', download=True)
 # add the following line to the config.yml file
 # datasets:
 #     cifar10: path/for/install
@@ -28,7 +28,7 @@ wget https://github.com/modestyachts/CIFAR-10.1/blob/master/datasets/cifar10.1_v
 # make sure wilds is installed (pip install wilds)
 from wilds.datasets.camelyon17_dataset import Camelyon17Dataset
 
-Camelyon17Dataset(root_dir='path/for/install', download=True)
+Camelyon17Dataset(root_dir='/home/ludmila/datasets', download=True)
 # add the following line to the config.yml file
 # datasets:
 #     camelyon17: path/for/install
@@ -38,7 +38,7 @@ We also create a 8bit quantized version of Camelyon17 for use in the experiments
 Use the following utility script to create the quantized version of the dataset.
 
 ```shell
-python -m data.sample_data.camelyon --root_dir path/for/install
+python -m data.sample_data.camelyon --root_dir /home/ludmila/datasets
 # add the following line to the config.yml file
 # datasets:
 #     camelyon17: path/for/install

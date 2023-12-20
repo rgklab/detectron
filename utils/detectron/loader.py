@@ -34,7 +34,14 @@ class MaskedDataset(Dataset[T_co]):
         Refine the dataset by removing the samples that are masked.
         :param mask:
         """
-        self.indices = [self.indices[i] for i, m in enumerate(mask) if m]
+        print("Length of self.indices before refinement:", len(self.indices))
+        # print("Mask length:", len(enumerate(mask)))
+        
+        
+        print("Mask content:", list(enumerate(mask.tolist())))
+        
+        # This is causing an index out of boundry issue and we don't get why (with both cifar and cameleyon)  
+        self.indices = [self.indices[i] for i, m in enumerate(mask) if m and i<len(self.indices)] 
 
     def original(self):
         return MaskedDataset(self.dataset, mask=False, pseudo_labels=self.pseudo_labels)
