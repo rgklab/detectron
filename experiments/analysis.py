@@ -71,14 +71,14 @@ for N in Ns:
     p_entropy = []
     for seed in tp.query(f'N=={N}').seed.unique():
         probs = tp.query(f'seed=={seed} and N=={N}').iloc[:n + 1].logits.map(lambda x: softmax(x, axis=-1)).mean()
-        entropy = (-np.log(probs) * probs).sum(1)
+        entropy = (-np.log(probs) * probs).sum(-1)
         p_entropy.append(entropy)
     p_entropy = np.stack(p_entropy)
 
     q_entropy = []
     for seed in tq.query(f'N=={N}').seed.unique():
         probs = tq.query(f'seed=={seed} and N=={N}').iloc[:n + 1].logits.map(lambda x: softmax(x, axis=-1)).mean()
-        entropy = (-np.log(probs) * probs).sum(1)
+        entropy = (-np.log(probs) * probs).sum(-1)
         q_entropy.append(entropy)
 
     q_entropy = np.stack(q_entropy)
