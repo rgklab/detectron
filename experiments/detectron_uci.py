@@ -64,6 +64,8 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
         'val_auc': float(base_model.eval(val_dmatrix).split(':')[1]),
         'test_auc': float(base_model.eval(q_labeled).split(':')[1]),
         'rejection_rate': 0,
+        # The parameter below is needed to calculate the AUC and TPR of the detectron entropy test!
+        'logits': base_model.predict(q_labeled,output_margin = True), 
         'test_probabilities': q_pseudo_probabilities,
         'count': N
     })
@@ -90,6 +92,8 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
                        'val_auc': float(detector.eval(val_dmatrix).split(':')[1]),
                        'test_auc': float(detector.eval(q_labeled).split(':')[1]),
                        'rejection_rate': 1 - n / N,
+                        # The parameter below is needed to calculate the AUC and TPR of the detectron entropy test!
+                       'logits':  detector.predict(q_labeled,output_margin = True),    
                        'test_probabilities': detector.predict(q_labeled),
                        'count': n})
 
