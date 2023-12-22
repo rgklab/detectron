@@ -66,7 +66,7 @@ def uci_heart_numpy():
     return loadmat(join(dirname, 'uci_heart_processed.mat'))
 
 
-def train_and_test(params=DEFAULT_PARAMS, model_path='/voyager/datasets/UCI', n_seeds=10):
+def train_and_test(params=DEFAULT_PARAMS, model_path='./model/UCI', n_seeds=10):
     data = uci_heart_xgb()
     # train <n_seeds> xgb models on the uci dataset and evaluate their in and out of distribution AUC
     iid_auc = []
@@ -94,3 +94,6 @@ def train_and_test(params=DEFAULT_PARAMS, model_path='/voyager/datasets/UCI', n_
     ood_auc = np.array(ood_auc)
     print(f'IID: {np.mean(iid_auc):.3f} \\pm {np.std(iid_auc):.3f}')
     print(f'OOD: {np.mean(ood_auc):.3f} \\pm {np.std(ood_auc):.3f}')
+
+# Saved and trained the UCI model with this function here :
+train_and_test(params=DEFAULT_PARAMS, model_path='models/UCI', n_seeds=10)
