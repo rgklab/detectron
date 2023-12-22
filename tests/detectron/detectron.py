@@ -51,7 +51,7 @@ def detectron_tst(p_train: Dataset,
                                 num_workers=num_workers,
                                 drop_last=True)
 
-    trainer = pl.Trainer(gpus=gpus, max_epochs=max_epochs_per_model, **trainer_kwargs)
+    trainer = pl.Trainer(accelerator='auto', devices='auto', max_epochs=max_epochs_per_model, **trainer_kwargs)
     ensemble = DetectronEnsemble(base_model)
 
     # train <ensemble_size> CDCs to agree on p_train and disagree on q
@@ -69,7 +69,7 @@ def detectron_tst(p_train: Dataset,
 def infer_labels(model: torch.nn.Module, dataset: Dataset | Sequence[Dataset], batch_size: Optional[int] = None,
                  num_workers=64, gpus=[0],
                  verbose=True, return_accuracy=False):
-    tr = pl.Trainer(gpus=gpus, max_epochs=1, enable_model_summary=False, logger=False)
+    tr = pl.Trainer(accelerator='auto', devices='auto', max_epochs=1, enable_model_summary=False, logger=False)
     if isinstance(dataset, Dataset):
         dataset = [dataset]
 
