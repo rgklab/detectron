@@ -40,7 +40,7 @@ class Model(pl.LightningModule):
         loss = self.loss_fn(y_hat, y)
         self._logger.on_val(y_hat, y, loss=loss)
 
-    def on_train_epoch_end(self, unused: Optional = None) -> None:
+    def on_train_epoch_end(self, unused: Optional[Any] = None) -> None:
         self._logger.after_train()
 
     def on_validation_epoch_end(self) -> None:
