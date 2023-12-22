@@ -23,7 +23,8 @@ for test in [test_p, test_q]:
     for d in test:
         for dd in d:
             dd['logits'] = dd['logits'].numpy()
-            del dd['rejection_mask']
+            if 'rejection_mask' in dd:
+               del dd['rejection_mask']
 
 print(f'→ {len(test_p) + len(test_q)} runs loaded')
 
