@@ -86,6 +86,7 @@ for N in Ns:
     null_tests = []
     for i, s1 in enumerate(p_entropy):
         s2 = p_entropy[np.arange(len(p_entropy)) != i].flatten()
+        s1 = s1.reshape(-1)
         null_tests.append(ks_2samp(s1, s2).pvalue)
 
     null = np.array(null_tests)
@@ -93,6 +94,7 @@ for N in Ns:
     alt_tests = []
     s2 = p_entropy[1:].flatten()
     for s1 in q_entropy:
+        s1 = s1.reshape(-1)
         alt_tests.append(ks_2samp(s1, s2).pvalue)
 
     alt = np.array(alt_tests)
