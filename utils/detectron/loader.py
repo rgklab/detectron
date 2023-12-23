@@ -34,8 +34,7 @@ class MaskedDataset(Dataset[T_co]):
         Refine the dataset by removing the samples that are masked.
         :param mask:
         """
-        self.indices = [self.indices[i] for i, m in enumerate(mask) if m]
-
+        self.indices = [self.indices[i] for i, m in enumerate(mask) if m and i<len(self.indices)] 
     def original(self):
         return MaskedDataset(self.dataset, mask=False, pseudo_labels=self.pseudo_labels)
 

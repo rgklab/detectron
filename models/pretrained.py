@@ -109,7 +109,7 @@ def xgb_trained_on_uci_heart(seed=0):
         'nthread': 4,
         'tree_method': 'gpu_hist'
     })
-    bst.load_model(f'/voyager/datasets/UCI/xgb_{seed=}.model')
+    bst.load_model(f'models/UCI/uci_heart_{seed}.model')
     return bst
 
 
