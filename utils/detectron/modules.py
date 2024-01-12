@@ -45,6 +45,7 @@ class DetectronModule(pl.LightningModule):
         self.q_logits = torch.zeros(1, dtype=torch.float)
         self.test_struct = DetectronStruct()
         self.optim_func = optim_func
+        self.test_step_outputs = []
 
     def set_alpha(self, alpha):
         self.loss.alpha = alpha
@@ -65,10 +66,11 @@ class DetectronModule(pl.LightningModule):
         reject_mask = ~torch.eq(pred, yhat)
         base_correct = torch.eq(yhat, y)
         detector_correct = torch.eq(pred, y)
-        return dict(logits=logits, reject_mask=reject_mask, base_correct=base_correct,
-                    detector_correct=detector_correct)
-
-    def test_epoch_end(self, outputs):
+        test_dict = dict(logits=logits, reject_mask=reject_mask, base_correct=base_correct,detector_correct=detector_correct)
+        self.test_step_outputs.append(test_dict)
+        return test_dict
+    
+    def on_test_epoch_end(self, outputs):
         logits = torch.cat([x['logits'] for x in outputs], dim=0)
         reject_mask = torch.cat([x['reject_mask'] for x in outputs], dim=0)
         base_correct = torch.cat([x['base_correct'] for x in outputs], dim=0)
@@ -82,13 +84,14 @@ class DetectronModule(pl.LightningModule):
             accepted_accuracy=base_correct[~reject_mask].float().mean().item(),
             detector_accuracy=detector_correct.float().mean().item(),
         )
+        self.test_step_outputs.clear()
 
     def validation_step(self, batch, batch_idx):
         x, y_hat, y, mask = batch
         logits = self.model(x)
         self.val_acc(logits.argmax(dim=1), y)
 
-    def validation_epoch_end(self, outputs):
+    def on_validation_epoch_end(self):
         self.log('val_acc', self.val_acc.compute())
         self.val_acc.reset()
 
