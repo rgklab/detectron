@@ -70,7 +70,7 @@ class DetectronModule(pl.LightningModule):
         self.test_step_outputs.append(test_dict)
         return test_dict
     
-    def on_test_epoch_end(self, outputs):
+    def on_test_epoch_end(self):
         logits = torch.cat([x['logits'] for x in outputs], dim=0)
         reject_mask = torch.cat([x['reject_mask'] for x in outputs], dim=0)
         base_correct = torch.cat([x['base_correct'] for x in outputs], dim=0)
