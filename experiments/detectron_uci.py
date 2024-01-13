@@ -65,6 +65,8 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
         'test_auc': float(base_model.eval(q_labeled).split(':')[1]),
         'rejection_rate': 0,
         'test_probabilities': q_pseudo_probabilities,
+        #Save the logits to use them later in the analysis
+        #'logits': base_model.predict(q_labeled,output_margin = True),
         'count': N
     })
     stopper = EarlyStopper(patience=patience, mode='min')
@@ -91,6 +93,8 @@ def detectron_tst(train: tuple[np.ndarray, np.ndarray], val: tuple[np.ndarray, n
                        'test_auc': float(detector.eval(q_labeled).split(':')[1]),
                        'rejection_rate': 1 - n / N,
                        'test_probabilities': detector.predict(q_labeled),
+                       #Save the logits to use them later in the analysis
+                       #'logits': base_model.predict(q_labeled,output_margin = True),
                        'count': n})
 
         # break if no more data
